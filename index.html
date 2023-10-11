@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reminder Management System</title>
+    <style>
+        /* Add your CSS styles here */
+        body {
+            font-family: Arial, sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <div id="login-container">
+        <h1>Login</h1>
+        <form id="login-form">
+            <input type="text" id="username" placeholder="Username">
+            <input type="password" id="password" placeholder="Password">
+            <button type="button" onclick="login()">Login</button>
+        </form>
+        <p id="login-message"></p>
+    </div>
+
+    <div id="reminder-container" style="display: none;">
+        <h1>Reminder Management System</h1>
+        <button onclick="logout()">Logout</button>
+        
+        <h2>Add Reminder</h2>
+        <form id="add-reminder-form">
+            <input type="text" id="reminder-text" placeholder="Enter your reminder">
+            <button type="button" onclick="addReminder()">Add Reminder</button>
+        </form>
+        <a href="disable.html">Disable Reminder</a>
+        <h2>Your Reminders</h2>
+        <ul id="reminder-list"></ul>
+    </div>
+    <script>
+        // In a real application, you'd need a proper authentication system and backend server.
+        // Here, we're using a simple username and password for demonstration purposes.
+
+        const validUsername = "user";
+        const validPassword = "pass";
+
+        let loggedIn = false;
+        let reminders = [];
+
+        function login() {
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+
+            if (username === validUsername && password === validPassword) {
+                document.getElementById("login-container").style.display = "none";
+                document.getElementById("reminder-container").style.display = "block";
+                loggedIn = true;
+                displayReminders();
+            } else {
+                document.getElementById("login-message").textContent = "Login failed. Please try again.";
+            }
+        }
+
+        function logout() {
+            document.getElementById("login-container").style.display = "block";
+            document.getElementById("reminder-container").style.display = "none";
+            loggedIn = false;
+        }
+
+        function addReminder() {
+            if (loggedIn) {
+                const reminderText = document.getElementById("reminder-text").value;
+                reminders.push(reminderText);
+                displayReminders();
+                document.getElementById("reminder-text").value = "";
+            }
+        }
+
+        function displayReminders() {
+            const reminderList = document.getElementById("reminder-list");
+            reminderList.innerHTML = "";
+            reminders.forEach((reminder, index) => {
+                const li = document.createElement("li");
+                li.textContent = reminder;
+                const deleteButton = document.createElement("button");
+                deleteButton.textContent = "Delete";
+                deleteButton.onclick = () => deleteReminder(index);
+                li.appendChild(deleteButton);
+                reminderList.appendChild(li);
+            });
+        }
+        function deleteReminder(index) {
+            reminders.splice(index, 1);
+            displayReminders();
+        }
+        function updateCurrentDate() {
+        const currentDate = new Date().toDateString();
+        currentDateElement.textContent = currentDate;
+        }
+    </script>
+</body>
+</html>
+
